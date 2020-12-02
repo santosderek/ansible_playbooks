@@ -1,0 +1,22 @@
+---
+
+- hosts: ocean
+  remote_user: derek
+  
+  tasks: 
+    - name: Pull latest from API
+      git:
+        repo: git@github.com:santosderek/api.git
+        dest: /home/derek/webservices/api
+        update: yes
+    
+    - name: Pull latest from Website
+      git:
+        repo: git@github.com:santosderek/website.git
+        dest: /home/derek/webservices/website
+        update: yes
+
+    - name: Docker Compose API
+      community.general.docker_compose:
+        build: yes
+        project_src: /home/derek/webservices
