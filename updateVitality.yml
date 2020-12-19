@@ -9,6 +9,7 @@
         repo: git@github.com:santosderek/Vitality.git
         dest: /home/derek/webservices/Vitality
         update: yes
+      register: gitpull
 
     - name: Docker Compose API
       community.general.docker_compose:
@@ -17,3 +18,4 @@
         pull: yes
         remove_orphans: yes
         services: vitality
+      when: gitpull.changed
