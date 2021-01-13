@@ -1,0 +1,32 @@
+---
+
+- hosts: testing
+  remote_user: derek
+  
+  tasks: 
+    - name: Installing apt dependencies
+      apt:
+        name:
+            - python3-pip
+
+    - name: Install pip dependencies
+      pip:
+        name:
+            - docker
+            - docker-compose
+
+    - name: Pull latest from Vitality
+      git:
+        repo: git@github.com:santosderek/website.git
+        dest: /home/derek/webservices/website
+        update: yes
+      register: gitpull
+
+    - name: Docker Compose API
+      community.general.docker_compose:
+        build: yes
+        project_src: /home/derek/webservices
+        pull: yes
+        remove_orphans: yes
+        services: website
+      #when: gitpull.changed
